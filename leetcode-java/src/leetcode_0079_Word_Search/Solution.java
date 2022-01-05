@@ -1,8 +1,4 @@
-package leetcode_0079;
-
-import sun.tools.jconsole.Worker;
-
-import java.util.Base64;
+package leetcode_0079_Word_Search;
 
 /**
  * description: 79. 单词搜索 Word Search
