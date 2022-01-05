@@ -64,14 +64,67 @@ public class Solution {
     public static void main(String[] args) {
         Solution solution = new Solution();
         char[][] demo1 = new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}};
+        char[][] demo2 = new char[][]{{'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}};
         String word1 = "ABCCED";
         String word2 = "SEE";
         String word3 = "ABCB";
+        String word4 = "oath";
+        Solution2 solution2 = new Solution2();
         // true
         System.out.println(solution.exist(demo1, word1));
+        System.out.println(solution2.exist(demo1, word1));
         // true
         System.out.println(solution.exist(demo1, word2));
+        System.out.println(solution2.exist(demo1, word2));
         // false
         System.out.println(solution.exist(demo1, word3));
+        System.out.println(solution2.exist(demo1, word3));
+        // true
+        System.out.println(solution.exist(demo2, word4));
+        System.out.println(solution2.exist(demo2, word4));
+    }
+}
+
+class Solution2 {
+    public boolean exist(char[][] board, String word) {
+        int m = board.length;
+        int n = board[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (check(board, word, i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean check(char[][] board, String word, int i, int j, int index) {
+        // 边界检查
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) {
+            return false;
+        }
+        // 格子已经访问过，返回
+        if (board[i][j] == '*') {
+            return false;
+        }
+        if (board[i][j] != word.charAt(index)) {
+            return false;
+        }
+        if (index == word.length() - 1) {
+            return true;
+        }
+        // 暂存一下当前格子的字符，方便回溯
+        char temp = board[i][j];
+        // 用一个 * 表示该格子已访问
+        board[i][j] = '*';
+        // 这里 java 的语法，只要某一个递归方向遇到有 true 的，则其他路并不会也去执行的
+        boolean flag = check(board, word, i, j + 1, index + 1)
+                || check(board, word, i + 1, j, index + 1)
+                || check(board, word, i, j - 1, index + 1)
+                || check(board, word, i - 1, j, index + 1);
+        // 回溯
+        board[i][j] = temp;
+        return flag;
     }
 }
